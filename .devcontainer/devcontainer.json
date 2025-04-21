@@ -1,0 +1,26 @@
+{
+  "name": "MyDevContainer",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "editor.formatOnSave": true
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-azuretools.vscode-docker",
+    "dbaeumer.vscode-eslint",
+    "eamodio.gitlens",
+    "ms-vscode-remote.remote-containers",
+    "esbenp.prettier-vscode"
+  ],
+  "mounts": [
+    "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.aws/sso/cache,target=/root/.aws/sso/cache,type=bind,consistency=cached"
+  ],
+  "remoteUser": "root",
+  "remoteEnv": {
+    "SHELL": "/usr/bin/zsh"
+  }
+}
