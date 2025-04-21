@@ -1,26 +1,37 @@
-# My Dev Container
+# Dev Container Environment
 
-This is a preconfigured development environment with:
+This repository contains a full-featured development container setup, designed for cloud and backend engineering work.
 
-- Python 3.12 + pip + uv
-- Node.js 22.x + npm
-- AWS CLI v2 + AWS CDK
-- Docker CLI
-- tmux + personal config
-- zsh + oh-my-zsh + Powerlevel10k
-- Helpful tools: `bat`, `fd`, `tree`, `ripgrep`, `htop`, etc.
+## Features
 
-## Setup Instructions
+- **Base**: Ubuntu 22.04
+- **Shell**: Zsh with Oh My Zsh and Powerlevel10k theme
+- **Terminal Multiplexer**: Tmux auto-start on shell login
+- **AWS CLI**: Installed and preconfigured via bind mount
+- **Python**: 3.11 with `uv` package manager (fast alternative to pip)
+- **Node.js**: 22.x via NodeSource
+- **AWS CDK**: Installed globally via NPM
+- **VS Code Extensions**:
+  - Python
+  - Docker
+  - ESLint
+  - GitLens
+  - Remote Containers
+  - Prettier
 
-1. Clone this repo locally.
-2. Open the folder in VS Code.
-3. You should be prompted to "Reopen in Container" — click it.
-4. Wait for container to build (may take a few minutes the first time).
-5. Done! You’re now inside your dev container.
+## Configuration
 
-**Notes:**
-- Your `~/.aws` credentials are automatically mounted into the container.
-- Your `.tmux.conf`, `.zshrc`, and `.p10k.zsh` configs are baked into the container.
+- **AWS Credentials**: Your local `~/.aws` directory is mounted into the container at `/root/.aws`.
+- **Zsh**: Configured with Oh My Zsh, Powerlevel10k theme, and git plugin.
+- **Tmux**: Automatically starts when opening a shell session.
 
-## Optional
-- Update your tmux, zsh, or Powerlevel10k configs by copying in new versions and rebuilding the container.
+## Usage
+
+To build and run the container manually:
+
+```bash
+docker build -t my-dev-container .
+docker run -it --rm \
+  -v ~/dev-container:/workspaces/dev-container \
+  -v ~/.aws:/root/.aws \
+  my-dev-container

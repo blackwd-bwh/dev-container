@@ -20,6 +20,7 @@
     "source=${localEnv:HOME}/.aws/sso/cache,target=/root/.aws/sso/cache,type=bind,consistency=cached"
   ],
   "remoteUser": "root",
+  "updateRemoteUserUID": true,
   "remoteEnv": {
     "SHELL": "/usr/bin/zsh"
   }

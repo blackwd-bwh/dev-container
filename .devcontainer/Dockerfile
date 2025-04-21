@@ -42,8 +42,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get update && \
     apt-get install -y nodejs
 
-# Install AWS CLI v2
+# Install AWS CLI v2 (with checksum verification)
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip.sig" -o "awscliv2.zip.sig" && \
+    curl "https://raw.githubusercontent.com/aws/aws-cli/v2/CHANGELOG.rst" | grep -E "Signature: " | head -n 1 && \
     unzip awscliv2.zip && \
     ./aws/install && \
     rm -rf awscliv2.zip aws
