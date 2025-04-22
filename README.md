@@ -88,7 +88,3 @@ Or, to use Visual Studio Code:
 - If tmux doesn't start, check that `$TERM` is set correctly and that `tmux` is installed.
 - If AWS CLI fails, verify that your local `~/.aws` folder has valid credentials.
 - If dotfiles are missing, verify that `~/code/dotfiles` exists inside WSL.
-
-## License
-
-MIT License. See LICENSE for details.
