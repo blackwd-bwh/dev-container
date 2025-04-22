@@ -1,12 +1,19 @@
 {
+  // Name of the Dev Container (shows up in VS Code UI)
   "name": "MyDevContainer",
+
+  // Build instructions: specify which Dockerfile to use
   "build": {
     "dockerfile": "Dockerfile"
   },
+
+  // Settings applied inside the container for VS Code
   "settings": {
     "terminal.integrated.defaultProfile.linux": "zsh",
     "editor.formatOnSave": true
   },
+
+  // List of VS Code extensions to install automatically inside the container
   "extensions": [
     "ms-python.python",
     "ms-azuretools.vscode-docker",
@@ -15,13 +22,24 @@
     "ms-vscode-remote.remote-containers",
     "esbenp.prettier-vscode"
   ],
+
+  // Host-to-container volume mounts
   "mounts": [
     "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/.aws/sso/cache,target=/root/.aws/sso/cache,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/.aws/sso/cache,target=/root/.aws/sso/cache,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/code/dotfiles,target=/root/.dotfiles,type=bind,consistency=cached"
   ],
+
+  // User inside the container (root gives full permissions)
   "remoteUser": "root",
+
+  // Adjust UID/GID inside container to match host user (avoids permission issues)
   "updateRemoteUserUID": true,
+
+  // Override remote environment variables
   "remoteEnv": {
     "SHELL": "/usr/bin/zsh"
-  }
+  },
+
+  "postCreateCommand": "/workspace/.devcontainer/setup.sh"
 }
