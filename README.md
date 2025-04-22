@@ -31,7 +31,21 @@ It includes a complete environment with Zsh, Powerlevel10k, tmux, and mounted pe
 
 ## Project Structure
 
-dev-container/ ├── .devcontainer/ │     ├── Dockerfile         (Builds the container) │     ├── devcontainer.json  (VS Code settings and mounts) │     └── setup.sh           (Optional: symlink dotfiles inside container) ├── dotfiles/ │     ├── .zshrc │     ├── .p10k.zsh │     ├── .tmux.conf │     ├── .gitconfig │     └── install.sh         (Optional: symlink script) ├── README.md └── LICENSE (optional)
+```text
+dev-container/
+  ├── .devcontainer/
+  │     ├── Dockerfile         (Builds the container)
+  │     ├── devcontainer.json  (VS Code settings and mounts)
+  │     └── setup.sh           (Optional: symlink dotfiles inside container)
+  ├── dotfiles/
+  │     ├── .zshrc
+  │     ├── .p10k.zsh
+  │     ├── .tmux.conf
+  │     ├── .gitconfig
+  │     └── install.sh         (Optional: symlink script)
+  ├── README.md
+  └── LICENSE (optional)
+```
 
 ## Usage
 
