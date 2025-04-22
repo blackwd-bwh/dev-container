@@ -40,6 +40,5 @@
   "remoteEnv": {
     "SHELL": "/usr/bin/zsh"
   },
-
-  "postCreateCommand": "/workspace/.devcontainer/setup.sh"
+  "postCreateCommand": "/root/.dotfiles/dotfiles_setup.sh"
 }
