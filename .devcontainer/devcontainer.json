@@ -25,9 +25,11 @@
 
   // Host-to-container volume mounts
   "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.aws/sso/cache,target=/root/.aws/sso/cache,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/code/dotfiles,target=/root/.dotfiles,type=bind,consistency=cached"
+    "source=${localEnv:HOME}/code/dotfiles,target=/root/.dotfiles,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/code/dotfiles,target=/root/code/dotfiles,type=bind,consistency=cached"
   ],
 
   // User inside the container (root gives full permissions)
@@ -38,7 +40,8 @@
 
   // Override remote environment variables
   "remoteEnv": {
+    "SSH_AUTH_SOCK": "/run/host-services/ssh-auth.sock",
     "SHELL": "/usr/bin/zsh"
   },
-  "postCreateCommand": "/root/.dotfiles/dotfiles_setup.sh"
+  "postCreateCommand": "bash .devcontainer/bootstrap.sh"
 }
