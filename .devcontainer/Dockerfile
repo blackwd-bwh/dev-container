@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     fonts-powerline \
     tree \
     bat \
+    netcat \
     build-essential \
     ca-certificates \
     gnupg \
@@ -46,15 +47,13 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.oh-my-zsh/custom/themes/powerlevel10k
 
 # Set up dotfiles mounting (assumes /root/.dotfiles is mounted by devcontainer.json)
-RUN echo 'source /root/.dotfiles/.zshrc' >> /root/.zshrc && \
-    echo '[[ -r /root/.dotfiles/.p10k.zsh ]] && source /root/.dotfiles/.p10k.zsh' >> /root/.zshrc && \
-    ln -s /root/.dotfiles/.tmux.conf /root/.tmux.conf && \
-    ln -s /root/.dotfiles/.gitconfig /root/.gitconfig
+RUN echo 'source /root/.zshrc' >> /root/.zshrc && \
+    echo '[[ -r /root/.p10k.zsh ]] && source /root/.p10k.zsh' >> /root/.zshrc && \
+    ln -s /root/code/dotfiles/configs/.tmux.conf /root/.tmux.conf && \
+    ln -s /root/code/dotfiles/configs/.gitconfig /root/.gitconfig
 
 # Set working directory
 WORKDIR /workspace
 
 # Default shell
-#CMD ["zsh", "-i"]
-CMD ["bash", "-c", "while true; do sleep 1000; done"]
-
+CMD ["sleep", "infinity"]
