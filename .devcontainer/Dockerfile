@@ -55,4 +55,6 @@ RUN echo 'source /root/.dotfiles/.zshrc' >> /root/.zshrc && \
 WORKDIR /workspace
 
 # Default shell
-CMD ["zsh"]
+#CMD ["zsh", "-i"]
+CMD ["bash", "-c", "while true; do sleep 1000; done"]
+
