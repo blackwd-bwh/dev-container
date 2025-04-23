@@ -16,8 +16,6 @@ RUN apt-get update && apt-get install -y \
     zsh \
     fonts-powerline \
     tree \
-    ripgrep \
-    fd-find \
     bat \
     build-essential \
     ca-certificates \

@@ -1,47 +1,55 @@
 {
-  // Name of the Dev Container (shows up in VS Code UI)
-  "name": "MyDevContainer",
+  "name": "Dev Container",
 
-  // Build instructions: specify which Dockerfile to use
   "build": {
     "dockerfile": "Dockerfile"
   },
 
-  // Settings applied inside the container for VS Code
   "settings": {
     "terminal.integrated.defaultProfile.linux": "zsh",
     "editor.formatOnSave": true
   },
 
-  // List of VS Code extensions to install automatically inside the container
-  "extensions": [
-    "ms-python.python",
-    "ms-azuretools.vscode-docker",
-    "dbaeumer.vscode-eslint",
-    "eamodio.gitlens",
-    "ms-vscode-remote.remote-containers",
-    "esbenp.prettier-vscode"
-  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-azuretools.vscode-docker",
+        "dbaeumer.vscode-eslint",
+        "eamodio.gitlens",
+        "ms-vscode-remote.remote-containers",
+        "esbenp.prettier-vscode",
+        "evondev.indent-rainbow-palettes",
+        "Boto3typed.boto3-ide"
+      ]
+    }
+  },
 
-  // Host-to-container volume mounts
   "mounts": [
+    // ✅ Mount deploy key for dotfiles access
+    "source=${env:HOME}/.ssh/dotfiles_deploy_key,target=/root/.ssh/dotfiles_deploy_key,type=bind,consistency=cached",
+
+    // ✅ Optional — full .ssh access (may conflict with above if not careful)
     "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+
+    // ✅ AWS config and cached SSO credentials
     "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.aws/sso/cache,target=/root/.aws/sso/cache,type=bind,consistency=cached",
-    "source=${localEnv:HOME}/code/dotfiles,target=/root/.dotfiles,type=bind,consistency=cached",
+
+    // ✅ Your local dotfiles repo
     "source=${localEnv:HOME}/code/dotfiles,target=/root/code/dotfiles,type=bind,consistency=cached"
   ],
 
-  // User inside the container (root gives full permissions)
   "remoteUser": "root",
-
-  // Adjust UID/GID inside container to match host user (avoids permission issues)
   "updateRemoteUserUID": true,
 
-  // Override remote environment variables
+  // ⛔ overrideCommand should be false or removed unless you're explicitly overriding CMD in Dockerfile
+  "overrideCommand": false,
+
   "remoteEnv": {
-    "SSH_AUTH_SOCK": "/run/host-services/ssh-auth.sock",
+    "HOME": "/root",
     "SHELL": "/usr/bin/zsh"
   },
+
   "postCreateCommand": "bash .devcontainer/bootstrap.sh"
 }
