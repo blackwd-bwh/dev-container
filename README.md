@@ -1,6 +1,6 @@
 # Dev Container Environment
 
-This project provides a ready-to-use development container for building and working with Python, Node.js, AWS, and Docker tooling.  
+This project provides a ready-to-use development container for building and working with Python, Node.js, AWS CLI, CDK and Docker tooling.  
 It includes a complete environment with Zsh, Powerlevel10k, tmux, and mounted personal dotfiles for a consistent development experience across machines.
 
 Customizations are provided via an external dotfiles repository, ensuring consistent shell, Git, and terminal settings across environments.  
