@@ -28,7 +28,8 @@
         "ms-vscode-remote.remote-containers",
         "esbenp.prettier-vscode",
         "evondev.indent-rainbow-palettes",
-        "Boto3typed.boto3-ide"
+        "Boto3typed.boto3-ide",
+        "oderwat.indent-rainbow"
       ]
     }
   },

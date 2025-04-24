@@ -1,0 +1,27 @@
+{
+    "workbench.colorTheme": "Neon Shimmer / Alpha",
+    "editor.fontSize": 20,
+    "indentRainbow.colors": [
+        "rgba(29, 78, 137,0.15)",
+        "rgba(58, 178, 202,0.15)",
+        "rgba(125, 207, 182, 0.15)",
+        "rgba(251, 209, 162,0.15)",
+        "rgba(247, 146, 86,0.15)",
+        "rgba(247, 146, 86,0.1)",
+        "rgba(247, 146, 86,0.05)"
+    ],
+    "background.editorBackgrounds": [
+        "https://pixabay.com/get/g64b5617a47411cf9f1ed4c86fe4867a99e6a80242b891d503531ae3dae93348c10f1e467ce43859f1d334d2a62d76229f0924d5697977205a48c95362f704be8f87718c573a9528b51f181250eef8e15_1280.jpg"
+    ],
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.minimap.sectionHeaderFontSize": 11,
+    "aws.telemetry": false,
+    "editor.minimap.scale": 3,
+    "python.analysis.autoImportCompletions": true,
+    "terminal.integrated.fontSize": 18,
+    "files.autoSave": "afterDelay",
+    "docker.extension.dockerEngineAvailabilityPrompt": false,
+    "indentRainbow.includedLanguages": [
+        
+    ]
+}
