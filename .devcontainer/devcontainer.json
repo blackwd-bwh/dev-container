@@ -22,6 +22,7 @@
     "vscode": {
       "extensions": [
         "ms-python.python",
+        "piperunner.neon-shimmer",
         "ms-azuretools.vscode-docker",
         "dbaeumer.vscode-eslint",
         "eamodio.gitlens",
