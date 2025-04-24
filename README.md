@@ -1,10 +1,14 @@
 # Dev Container Environment
 
-This project provides a ready-to-use development container for building and working with Python, Node.js, AWS, and Docker tooling.
+This project provides a ready-to-use development container for building and working with Python, Node.js, AWS, and Docker tooling.  
 It includes a complete environment with Zsh, Powerlevel10k, tmux, and mounted personal dotfiles for a consistent development experience across machines.
-Customizations are provided via an external dotfiles repository, ensuring consistent shell, Git, and terminal settings across environments.
 
+Customizations are provided via an external dotfiles repository, ensuring consistent shell, Git, and terminal settings across environments.  
 The container automatically installs required VS Code extensions, sets up Zsh with a custom Powerlevel10k configuration, and configures tmux with personalized keybindings and appearance settings to optimize terminal workflows.
+
+This setup also includes robust SSH agent handling using a fixed socket path, enabling the SSH key to persist across tmux panes and terminals for the duration of the container session. The SSH agent is started manually with a custom script, and its socket and environment variables are saved and reused automatically.
+
+---
 
 ## Features
 
@@ -23,45 +27,79 @@ The container automatically installs required VS Code extensions, sets up Zsh wi
   - GitLens
   - Remote Containers
   - Prettier
+  - Boto3 IDE
+  - Indent Rainbow
+
+---
 
 ## Requirements
 
 Before using this Dev Container:
 
-- Clone your dotfiles repository inside WSL:
+- Ensure Docker Desktop with WSL 2 backend is running (on Windows).
+- Ensure your AWS credentials are located at `~/.aws/` inside WSL.
+- Place your SSH deploy key at `~/.ssh/dotfiles_deploy_key` and unlock it when prompted.
+- Optional: provide your HTTPS fallback token at `~/.dotfiles_token`.
 
-  ```bash
-  mkdir -p ~/code
-  cd ~/code
-  git clone git@scm.bwhhg.io:users/blackwd/repos/dotfiles.git
-  ```
+No need to manually clone the dotfiles repository — it will be pulled automatically by the container's bootstrap process if not already present.
 
-- Verify that your AWS credentials are located at `~/.aws/` inside WSL.
-- Ensure Docker Desktop with WSL 2 backend is running.
+---
 
 ## Configuration
 
-- **AWS Credentials**: Your local `~/.aws` directory is mounted into the container at `/root/.aws`.
-- **Dotfiles**: Your local `~/code/dotfiles` directory is mounted into the container at `/root/.dotfiles`.
-- **Zsh**: Configured with Oh My Zsh, Powerlevel10k theme, and git plugin.
-- **Tmux**: Automatically starts when opening a shell session.
-- **Git Config**: `.gitconfig` from your dotfiles is symlinked inside the container.
+- **AWS Credentials**: Mounted from `~/.aws` → `/root/.aws`
+- **Dotfiles**: Mounted from `~/code/dotfiles` → `/root/code/dotfiles`
+- **SSH Key**: Mounted from `~/.ssh/dotfiles_deploy_key` → `/root/.ssh/dotfiles_deploy_key`
+- **Zsh**: Configured with Oh My Zsh, Powerlevel10k theme, and git plugin
+- **tmux**: Automatically starts on shell login
+- **Git Config**: `.gitconfig` from dotfiles symlinked inside container
+
+---
 
 ## Project Structure
 
-```text
-dev-container/
-├── .devcontainer/
-│   ├── Dockerfile
-│   ├── devcontainer.json
-│   └── dotfiles_setup.sh
-├── .gitignore
-├── README.md
+```
+.devcontainer/
+├── Dockerfile
+├── devcontainer.json
+├── bootstrap.sh
 ```
 
-_(No dotfiles are stored directly inside this repo — they are mounted at runtime.)_
+---
 
-## Usage
+## SSH Agent Handling
+
+The dev container uses a persistent SSH agent with a fixed socket path:
+
+- The agent is started in `start_ssh_agent.sh` using the socket `/root/.ssh/ssh-agent.sock`
+- Its environment variables (`SSH_AUTH_SOCK`, `SSH_AGENT_PID`) are saved to `/root/.ssh/agent_env`
+- All new shells and tmux panes source this file to reuse the existing agent
+- The SSH key (`dotfiles_deploy_key`) is added once at startup
+- You only need to enter your passphrase once per container session
+
+To reuse the agent in a new pane or shell:
+
+```bash
+source ~/.ssh/agent_env
+```
+
+---
+
+## Startup Process
+
+1. VS Code opens the folder and reads `.devcontainer/devcontainer.json`
+2. Docker builds the image (via `Dockerfile`)
+3. Container starts with all defined `mounts`
+4. `bootstrap.sh` runs inside the container and:
+   - Sets up `.ssh` and `known_hosts`
+   - Clones or pulls dotfiles via SSH or HTTPS
+   - Runs `dotfiles_setup.sh` inside the dotfiles repo
+   - Symlinks `.zshrc`
+   - Starts and initializes the SSH agent
+
+---
+
+## Usage (Manual)
 
 To build and run the container manually:
 
@@ -70,24 +108,44 @@ docker build -t my-dev-container .
 docker run -it --rm \
   -v ~/dev-container:/workspaces/dev-container \
   -v ~/.aws:/root/.aws \
-  -v ~/code/dotfiles:/root/.dotfiles \
+  -v ~/code/dotfiles:/root/code/dotfiles \
+  -v ~/.ssh/dotfiles_deploy_key:/root/.ssh/dotfiles_deploy_key \
   my-dev-container
 ```
 
-Or, to use Visual Studio Code:
+---
 
-- Open the `dev-container/` folder.
+## Usage (VS Code)
+
+- Open the `dev-container/` folder in VS Code.
 - Accept the prompt to "Reopen in Container."
-- Your environment will automatically have Zsh, tmux, AWS CLI, and dotfiles ready.
+- Your environment will be fully configured inside the container.
 
-## Notes
+---
 
-- Node.js and Python are installed from official sources, not apt.
-- AWS credentials are **mounted**, not baked into the image for security.
-- Dotfiles are **mounted** from your WSL filesystem, not copied.
+## Testing Git SSH Access
+
+```bash
+ssh -T git@scm.bwhhg.io -p 7999
+```
+
+---
 
 ## Troubleshooting
 
-- If tmux doesn't start, check that `$TERM` is set correctly and that `tmux` is installed.
-- If AWS CLI fails, verify that your local `~/.aws` folder has valid credentials.
-- If dotfiles are missing, verify that `~/code/dotfiles` exists inside WSL.
+- If tmux doesn't start, check that `$TERM` is `screen-256color`
+- If AWS CLI fails, verify `~/.aws` exists and contains valid credentials
+- If dotfiles are not synced, verify that the key or token is correct and the repo is reachable
+- Run `bash ~/code/dotfiles/scripts/start_ssh_agent.sh` manually if the key isn't loaded
+- Run `source ~/.ssh/agent_env` in new tmux panes if needed
+
+---
+
+## Cleanup
+
+To rebuild cleanly in VS Code:
+
+```bash
+Dev Containers: Rebuild and Reopen in Container
+```
+
