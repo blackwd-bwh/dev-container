@@ -28,8 +28,9 @@ RUN apt-get update && apt-get install -y \
     python3.11-distutils \
     && ln -sf /usr/bin/python3.11 /usr/bin/python3 \
     && curl -sS https://bootstrap.pypa.io/get-pip.py | python3 \
-    && pip install uv \
+    && pip install --no-cache-dir uv ipython \
     && apt-get clean
+
 
 # Install Node.js 22.x
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \

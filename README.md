@@ -6,7 +6,8 @@ It includes a complete environment with Zsh, Powerlevel10k, tmux, and mounted pe
 Customizations are provided via an external dotfiles repository, ensuring consistent shell, Git, and terminal settings across environments.  
 The container automatically installs required VS Code extensions, sets up Zsh with a custom Powerlevel10k configuration, and configures tmux with personalized keybindings and appearance settings to optimize terminal workflows.
 
-This setup also includes robust SSH agent handling using a fixed socket path, enabling the SSH key to persist across tmux panes and terminals for the duration of the container session. The SSH agent is started manually with a custom script, and its socket and environment variables are saved and reused automatically.
+This setup also includes robust SSH agent handling using a fixed socket path, enabling the SSH key to persist across tmux panes and terminals for the duration of the container session. 
+The SSH agent is started manually with a custom script, and its socket and environment variables are saved and reused automatically.
 
 ---
 
@@ -67,21 +68,39 @@ No need to manually clone the dotfiles repository — it will be pulled automati
 
 ---
 
-## SSH Agent Handling
+## SSH Agent and Socket Handling
 
-The dev container uses a persistent SSH agent with a fixed socket path:
+This dev container uses a persistent `ssh-agent` with a fixed socket path to ensure secure and seamless SSH key usage across all terminals and tmux sessions.
 
-- The agent is started in `start_ssh_agent.sh` using the socket `/root/.ssh/ssh-agent.sock`
-- Its environment variables (`SSH_AUTH_SOCK`, `SSH_AGENT_PID`) are saved to `/root/.ssh/agent_env`
-- All new shells and tmux panes source this file to reuse the existing agent
-- The SSH key (`dotfiles_deploy_key`) is added once at startup
-- You only need to enter your passphrase once per container session
+### How it works
 
-To reuse the agent in a new pane or shell:
+- The agent is started in `start_ssh_agent.sh` using the socket:
+  ```
+  /root/.ssh/ssh-agent.sock
+  ```
+- The environment variables are written to:
+  ```
+  /root/.ssh/agent_env
+  ```
+- All new shells and tmux panes source that file to reuse the agent:
+  ```bash
+  source ~/.ssh/agent_env
+  ```
+- SSH keys are loaded once and available throughout the container session.
 
-```bash
-source ~/.ssh/agent_env
-```
+### Benefits
+
+- You only enter your passphrase once per container session.
+- SSH and Git commands can access your keys without re-prompting.
+- Keys are never written to disk after loading — they remain in memory.
+- tmux sessions, terminals, and scripts all use the same agent securely.
+
+| Component                     | Purpose                                           |
+|-------------------------------|---------------------------------------------------|
+| `ssh-agent`                   | Holds SSH keys in memory                          |
+| `/root/.ssh/ssh-agent.sock`   | Shared socket used by all sessions                |
+| `/root/.ssh/agent_env`        | Saves agent socket path and process ID            |
+| `start_ssh_agent.sh`          | Creates the socket, starts agent, and loads keys  |
 
 ---
 
