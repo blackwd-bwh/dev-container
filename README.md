@@ -6,7 +6,8 @@ It includes a complete environment with Zsh, Powerlevel10k, tmux, and mounted pe
 Customizations are provided via an external dotfiles repository, ensuring consistent shell, Git, and terminal settings across environments.  
 The container automatically installs required VS Code extensions, sets up Zsh with a custom Powerlevel10k configuration, and configures tmux with personalized keybindings and appearance settings to optimize terminal workflows.
 
-This setup also includes robust SSH agent handling using a fixed socket path, enabling the SSH key to persist across tmux panes and terminals for the duration of the container session. The SSH agent is started manually with a custom script, and its socket and environment variables are saved and reused automatically.
+This setup also includes robust SSH agent handling using a fixed socket path, enabling the SSH key to persist across tmux panes and terminals for the duration of the container session. 
+The SSH agent is started manually with a custom script, and its socket and environment variables are saved and reused automatically.
 
 ---
 
