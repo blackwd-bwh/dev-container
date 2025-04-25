@@ -25,12 +25,12 @@
         "piperunner.neon-shimmer",
         "ms-azuretools.vscode-docker",
         "dbaeumer.vscode-eslint",
-        "eamodio.gitlens",
         "ms-vscode-remote.remote-containers",
         "esbenp.prettier-vscode",
         "evondev.indent-rainbow-palettes",
         "Boto3typed.boto3-ide",
-        "oderwat.indent-rainbow"
+        "oderwat.indent-rainbow",
+        "SirTori.indenticator"
       ]
     }
   },
