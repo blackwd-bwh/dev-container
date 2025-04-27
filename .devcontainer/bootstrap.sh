@@ -11,6 +11,7 @@ SSH_PORT=7999
 
 # 1. Ensure ~/.ssh exists with correct permissions
 mkdir -p ~/.ssh
+chown -R root:root ~/.ssh
 chmod 700 ~/.ssh
 touch ~/.ssh/known_hosts
 chmod 600 ~/.ssh/known_hosts
