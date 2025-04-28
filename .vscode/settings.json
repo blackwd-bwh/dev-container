@@ -1,7 +1,7 @@
 {
     "workbench.colorTheme": "Neon Shimmer / Alpha",
-    "terminal.integrated.fontFamily": "monospace",
-    "editor.fontFamily": "MesloLGS NF",
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "editor.fontFamily": "'MesloLGS NF', Consolas, 'Courier New', monospace",
     "editor.fontSize": 20,
     "indentRainbow.colors": [
         "rgba(29, 78, 137,0.15)",
