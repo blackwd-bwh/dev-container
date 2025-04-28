@@ -9,14 +9,14 @@ SSH_CONFIG="/root/.ssh/config"
 GIT_REMOTE_SSH="git@dotfiles:~blackwd/dotfiles.git"
 SSH_PORT=7999
 
-# 1. Prepare fresh /root/.ssh folder
+# 1. Prepare fresh /root/.ssh
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 
-# 2. Copy only necessary SSH keys from /mnt/ssh
+# 2. Copy only necessary SSH keys if missing
 echo "Copying SSH keys..."
-cp /mnt/ssh/dotfiles_deploy_key /root/.ssh/dotfiles_deploy_key
-cp /mnt/ssh/bitbucket /root/.ssh/bitbucket
+[ ! -f /root/.ssh/dotfiles_deploy_key ] && cp /mnt/ssh/dotfiles_deploy_key /root/.ssh/dotfiles_deploy_key
+[ ! -f /root/.ssh/bitbucket ] && cp /mnt/ssh/bitbucket /root/.ssh/bitbucket
 
 # Fix ownership and permissions after copy
 chown -R root:root ~/.ssh
@@ -41,6 +41,8 @@ fi
 chmod 600 "$SSH_CONFIG"
 
 # 4. Pre-load known_hosts to avoid SSH prompts
+touch ~/.ssh/known_hosts
+chmod 600 ~/.ssh/known_hosts
 ssh-keyscan -p $SSH_PORT scm.bwhhg.io >> ~/.ssh/known_hosts 2>/dev/null || true
 sort -u ~/.ssh/known_hosts -o ~/.ssh/known_hosts
 
@@ -82,7 +84,7 @@ ln -sf "$DOTFILES_DIR/configs/.zshrc" /root/.zshrc
 # 9. Start SSH agent and load keys
 bash "$DOTFILES_DIR/scripts/start_ssh_agent.sh"
 
-# 10. Optional: Unload the dotfiles deploy key after bootstrap
+# 10. Optional: Unload the dotfiles deploy key
 if ssh-add -l 2>/dev/null | grep -q "dotfiles_deploy_key"; then
   echo "Unloading dotfiles_deploy_key from SSH agent..."
   ssh-add -d ~/.ssh/dotfiles_deploy_key || echo "Failed to unload deploy key"
