@@ -25,12 +25,12 @@
         "piperunner.neon-shimmer",
         "ms-azuretools.vscode-docker",
         "dbaeumer.vscode-eslint",
-        "eamodio.gitlens",
         "ms-vscode-remote.remote-containers",
         "esbenp.prettier-vscode",
         "evondev.indent-rainbow-palettes",
         "Boto3typed.boto3-ide",
-        "oderwat.indent-rainbow"
+        "oderwat.indent-rainbow",
+        "SirTori.indenticator"
       ]
     }
   },
@@ -42,7 +42,10 @@
     "source=${env:HOME}/.ssh/dotfiles_deploy_key,target=/root/.ssh/dotfiles_deploy_key,type=bind,consistency=cached",
 
     // Optional — full .ssh access (may conflict with above if not careful)
-    "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+    // "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+        
+    // TEMPORARY: Mount a copy of your .ssh just for initial key access
+    "source=${localEnv:HOME}/.ssh,target=/mnt/ssh,type=bind,consistency=cached",
 
     // AWS config and cached SSO credentials
     "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",

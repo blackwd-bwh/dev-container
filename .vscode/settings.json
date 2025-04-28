@@ -1,5 +1,7 @@
 {
     "workbench.colorTheme": "Neon Shimmer / Alpha",
+    "terminal.integrated.fontFamily": "MesloLGS NF",
+    "editor.fontFamily": "'MesloLGS NF', Consolas, 'Courier New', monospace",
     "editor.fontSize": 20,
     "indentRainbow.colors": [
         "rgba(29, 78, 137,0.15)",
@@ -18,7 +20,5 @@
     "terminal.integrated.fontSize": 18,
     "files.autoSave": "afterDelay",
     "docker.extension.dockerEngineAvailabilityPrompt": false,
-    "indentRainbow.includedLanguages": [
-        
-    ]
+    "indentRainbow.includedLanguages": []
 }
