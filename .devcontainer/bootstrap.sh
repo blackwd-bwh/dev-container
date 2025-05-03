@@ -92,4 +92,21 @@ else
   echo "dotfiles_deploy_key not found in agent — nothing to unload"
 fi
 
+# 11. Install MesloLGL Nerd Font (Powerlevel10k-compatible) from release ZIP
+FONT_DIR="/usr/share/fonts/MesloLGS"
+FONT_ZIP="/tmp/Meslo.zip"
+
+if [ ! -d "$FONT_DIR" ]; then
+  echo "📦 Downloading Meslo Nerd Font zip from release..."
+  curl -fsSL -o "$FONT_ZIP" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip"
+  echo "📂 Extracting font files..."
+  mkdir -p "$FONT_DIR"
+  unzip -q "$FONT_ZIP" -d "$FONT_DIR"
+  rm "$FONT_ZIP"
+  echo "🔄 Refreshing font cache..."
+  fc-cache -fv
+else
+  echo "✅ MesloLGS fonts already installed in $FONT_DIR"
+fi
+
 echo "✅ Bootstrap complete."
