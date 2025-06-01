@@ -1,6 +1,7 @@
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV PATH="/root/.cargo/bin:$PATH"
 
 # Install system utilities and development tools
 RUN apt-get update && apt-get install -y \
@@ -23,25 +24,16 @@ RUN apt-get update && apt-get install -y \
     gnupg \
     lsb-release \
     software-properties-common \
-    python3.11 \
-    python3.11-venv \
-    python3.11-distutils \
-    && ln -sf /usr/bin/python3.11 /usr/bin/python3 \
-    && curl -sS https://bootstrap.pypa.io/get-pip.py | python3 \
-    && pip install --no-cache-dir uv ipython \
     && apt-get clean
 
-
-# Install Node.js 22.x
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get update && apt-get install -y nodejs
+# Install Rust using rustup
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+    . "$HOME/.cargo/env" && \
+    rustup component add rustfmt clippy
 
 # Install AWS CLI v2
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws
-
-# Install AWS CDK globally
-RUN npm install -g aws-cdk
 
 # Install Oh My Zsh and Powerlevel10k
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended && \
