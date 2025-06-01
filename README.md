@@ -1,13 +1,6 @@
-# Dev Container Environment
+# Rust Dev Container (`ubuntu-rust-dev`)
 
-This project provides a ready-to-use development container for building and working with Python, Node.js, AWS CLI, CDK and Docker tooling.  
-It includes a complete environment with Zsh, Powerlevel10k, tmux, and mounted personal dotfiles for a consistent development experience across machines.
-
-Customizations are provided via an external dotfiles repository, ensuring consistent shell, Git, and terminal settings across environments.  
-The container automatically installs required VS Code extensions, sets up Zsh with a custom Powerlevel10k configuration, and configures tmux with personalized keybindings and appearance settings to optimize terminal workflows.
-
-This setup also includes robust SSH agent handling using a fixed socket path, enabling the SSH key to persist across tmux panes and terminals for the duration of the container session. 
-The SSH agent is started manually with a custom script, and its socket and environment variables are saved and reused automatically.
+This dev container is tailored for Rust development, with a focus on CLI and JetBrains RustRover workflows. Unlike other containers in this series, it is not optimized for use with VS Code, but instead supports a clean Docker-based toolchain and SSH-aware terminal environment.
 
 ---
 
@@ -15,45 +8,96 @@ The SSH agent is started manually with a custom script, and its socket and envir
 
 - **Base**: Ubuntu 22.04
 - **Shell**: Zsh with Oh My Zsh and Powerlevel10k theme
-- **Terminal Multiplexer**: tmux auto-start on shell login
-- **AWS CLI**: Installed and preconfigured via bind mount
-- **Python**: 3.11 with `uv` package manager (fast alternative to pip)
-- **Node.js**: 22.x via NodeSource
-- **AWS CDK**: Installed globally via npm
-- **Development Tools**: tree, bat, fd, htop, jq, ripgrep, build-essential
-- **VS Code Extensions**:
-  - Python
-  - Docker
-  - ESLint
-  - GitLens
-  - Remote Containers
-  - Prettier
-  - Boto3 IDE
-  - Indent Rainbow
+- **Terminal Multiplexer**: tmux auto-start
+- **Rust**: Installed via rustup (includes rustc, cargo, rustfmt, clippy)
+- **AWS CLI v2**: Preinstalled
+- **Development Tools**: build-essential, jq, htop, tree, bat, ripgrep, etc.
+- **SSH Agent**: Persistent, secure key management with shared socket
+- **Dotfiles**: Automatically cloned and configured via bootstrap script
 
 ---
 
-## Requirements
+## Usage: CLI and RustRover
 
-Before using this Dev Container:
+### 🔧 With Devcontainer CLI
 
-- Ensure Docker Desktop with WSL 2 backend is running (on Windows).
-- Ensure your AWS credentials are located at `~/.aws/` inside WSL.
-- Place your SSH deploy key at `~/.ssh/dotfiles_deploy_key` and unlock it when prompted.
-- Optional: provide your HTTPS fallback token at `~/.dotfiles_token`.
+To build and run the container from WSL:
 
-No need to manually clone the dotfiles repository — it will be pulled automatically by the container's bootstrap process if not already present.
+```bash
+cd ~/code/dev-container
+devcontainer up --workspace-folder . --name rustrover-dev
+```
+
+To open a shell inside:
+
+```bash
+docker exec -it rustrover-dev zsh
+```
+---
+
+### 🧠 RustRover Integration
+
+RustRover supports Dev Containers through a built-in interface.
+
+To launch the container:
+
+1. Right-click the `.devcontainer/` folder in the Project view
+2. Select:
+   ```
+   Dev Containers → Create Dev Container and Mount Sources...
+   ```
+3. RustRover will:
+   - Parse your `.devcontainer.json`
+   - Build and start the container
+   - Mount your project into it
+   - Open a new IDE context attached to the container
+
+This approach allows you to work inside a Docker-based Rust environment without using the "Remote Development" workflow.
+
+💡 Choose **"Mount Sources"** if you want to keep editing your real files on disk.
 
 ---
 
-## Configuration
+## Choosing Between Mount Sources and Clone Sources
 
-- **AWS Credentials**: Mounted from `~/.aws` → `/root/.aws`
-- **Dotfiles**: Mounted from `~/code/dotfiles` → `/root/code/dotfiles`
-- **SSH Key**: Mounted from `~/.ssh/dotfiles_deploy_key` → `/root/.ssh/dotfiles_deploy_key`
-- **Zsh**: Configured with Oh My Zsh, Powerlevel10k theme, and git plugin
-- **tmux**: Automatically starts on shell login
-- **Git Config**: `.gitconfig` from dotfiles symlinked inside container
+When creating a container, you have two main options for how your code is handled:
+
+### ✅ Option 1: Mount Sources (Recommended for RustRover)
+
+```bash
+devcontainer up --workspace-folder ~/code/myproject
+```
+
+- Uses your **existing local files**
+- Changes made in the container update your real files
+- You can edit with RustRover or any editor outside the container
+- When the container is stopped or deleted, your code is safe
+
+✅ **Use this when you want to do real development and keep your files.**
+
+---
+
+### 📦 Option 2: Clone Sources
+
+```bash
+devcontainer up --clone-repo https://github.com/youruser/myproject.git
+```
+
+- Clones the repo directly **into the container**
+- Your local files are untouched
+- Changes are kept inside the container unless you push to Git
+- If the container is deleted, your changes are lost
+
+🟡 **Use this only when you want an isolated, temporary environment.**
+
+---
+
+## SSH Agent Setup
+
+- Agent socket: `/root/.ssh/ssh-agent.sock`
+- Environment: `/root/.ssh/agent_env`
+- Loaded via `start_ssh_agent.sh` and sourced in shell
+- Works across tmux panes and terminals
 
 ---
 
@@ -68,103 +112,32 @@ No need to manually clone the dotfiles repository — it will be pulled automati
 
 ---
 
-## SSH Agent and Socket Handling
+## Requirements
 
-This dev container uses a persistent `ssh-agent` with a fixed socket path to ensure secure and seamless SSH key usage across all terminals and tmux sessions.
-
-### How it works
-
-- The agent is started in `start_ssh_agent.sh` using the socket:
-  ```
-  /root/.ssh/ssh-agent.sock
-  ```
-- The environment variables are written to:
-  ```
-  /root/.ssh/agent_env
-  ```
-- All new shells and tmux panes source that file to reuse the agent:
-  ```bash
-  source ~/.ssh/agent_env
-  ```
-- SSH keys are loaded once and available throughout the container session.
-
-### Benefits
-
-- You only enter your passphrase once per container session.
-- SSH and Git commands can access your keys without re-prompting.
-- Keys are never written to disk after loading — they remain in memory.
-- tmux sessions, terminals, and scripts all use the same agent securely.
-
-| Component                     | Purpose                                           |
-|-------------------------------|---------------------------------------------------|
-| `ssh-agent`                   | Holds SSH keys in memory                          |
-| `/root/.ssh/ssh-agent.sock`   | Shared socket used by all sessions                |
-| `/root/.ssh/agent_env`        | Saves agent socket path and process ID            |
-| `start_ssh_agent.sh`          | Creates the socket, starts agent, and loads keys  |
+- Docker Desktop with WSL 2 backend enabled
+- SSH key at `~/.ssh/dotfiles_deploy_key`
+- AWS credentials at `~/.aws/`
+- Optional: `~/.dotfiles_token` fallback
 
 ---
 
-## Startup Process
-
-1. VS Code opens the folder and reads `.devcontainer/devcontainer.json`
-2. Docker builds the image (via `Dockerfile`)
-3. Container starts with all defined `mounts`
-4. `bootstrap.sh` runs inside the container and:
-   - Sets up `.ssh` and `known_hosts`
-   - Clones or pulls dotfiles via SSH or HTTPS
-   - Runs `dotfiles_setup.sh` inside the dotfiles repo
-   - Symlinks `.zshrc`
-   - Starts and initializes the SSH agent
-
----
-
-## Usage (Manual)
-
-To build and run the container manually:
+## Manual Build (for testing)
 
 ```bash
-docker build -t my-dev-container .
+docker build -t rust-dev-container .
 docker run -it --rm \
-  -v ~/dev-container:/workspaces/dev-container \
   -v ~/.aws:/root/.aws \
   -v ~/code/dotfiles:/root/code/dotfiles \
   -v ~/.ssh/dotfiles_deploy_key:/root/.ssh/dotfiles_deploy_key \
-  my-dev-container
-```
-
----
-
-## Usage (VS Code)
-
-- Open the `dev-container/` folder in VS Code.
-- Accept the prompt to "Reopen in Container."
-- Your environment will be fully configured inside the container.
-
----
-
-## Testing Git SSH Access
-
-```bash
-ssh -T git@scm.bwhhg.io -p 7999
+  rust-dev-container
 ```
 
 ---
 
 ## Troubleshooting
 
-- If tmux doesn't start, check that `$TERM` is `screen-256color`
-- If AWS CLI fails, verify `~/.aws` exists and contains valid credentials
-- If dotfiles are not synced, verify that the key or token is correct and the repo is reachable
-- Run `bash ~/code/dotfiles/scripts/start_ssh_agent.sh` manually if the key isn't loaded
-- Run `source ~/.ssh/agent_env` in new tmux panes if needed
+- If SSH fails: check `/root/.ssh/agent_env` or rerun `start_ssh_agent.sh`
+- If RustRover doesn't detect the toolchain: verify the container is running
+- If dotfiles don't sync: check SSH or fallback token config
 
 ---
-
-## Cleanup
-
-To rebuild cleanly in VS Code:
-
-```bash
-Dev Containers: Rebuild and Reopen in Container
-```
-
