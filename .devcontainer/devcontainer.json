@@ -6,16 +6,15 @@
   },
 
   "settings": {
-    // VS Code user settings applied inside the container
-    "terminal.integrated.defaultProfile.linux": "zsh", // Set zsh as the default terminal shell
-    "terminal.integrated.shellIntegration.enabled": true, // Enable enhanced shell integration
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.shellIntegration.enabled": true,
     "terminal.integrated.profiles.linux": {
       "zsh": {
-        "path": "/usr/bin/zsh", // Path to the zsh binary
-        "args": ["-l"] // Launch as a login shell
+        "path": "/usr/bin/zsh",
+        "args": ["-l"]
       }
     },
-    "editor.formatOnSave": true // Automatically format code on save
+    "editor.formatOnSave": true
   },
 
   "customizations": {
@@ -36,38 +35,22 @@
   },
 
   "mounts": [
-    // Bind mounts to bring in host files and directories
-
-    // Mount deploy key for dotfiles access
     "source=${env:HOME}/.ssh/dotfiles_deploy_key,target=/root/.ssh/dotfiles_deploy_key,type=bind,consistency=cached",
-
-    // Optional — full .ssh access (may conflict with above if not careful)
-    // "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
-        
-    // TEMPORARY: Mount a copy of your .ssh just for initial key access
     "source=${localEnv:HOME}/.ssh,target=/mnt/ssh,type=bind,consistency=cached",
-
-    // AWS config and cached SSO credentials
     "source=${localEnv:HOME}/.aws,target=/root/.aws,type=bind,consistency=cached",
     "source=${localEnv:HOME}/.aws/sso/cache,target=/root/.aws/sso/cache,type=bind,consistency=cached",
-
-    // Your local dotfiles repo
     "source=${localEnv:HOME}/code/dotfiles,target=/root/code/dotfiles,type=bind,consistency=cached",
-
-    // Fallback token for HTTPS dotfiles access
     "source=${env:HOME}/.dotfiles_token,target=/root/.dotfiles_token,type=bind,consistency=cached"
   ],
 
-  "remoteUser": "root", // Run the container as the root user
-  "updateRemoteUserUID": true, // Update UID to match host user for file permission consistency
-
-  // overrideCommand should be false or removed unless you're explicitly overriding CMD in Dockerfile
+  "remoteUser": "root",
+  "updateRemoteUserUID": true,
   "overrideCommand": false,
 
   "remoteEnv": {
-    "HOME": "/root", // Ensure consistent HOME path
-    "SHELL": "/usr/bin/zsh" // Default shell in remote environment
+    "HOME": "/root",
+    "SHELL": "/usr/bin/zsh"
   },
 
-  "postCreateCommand": "bash .devcontainer/bootstrap.sh" // Script to run after the container is created
+  "postCreateCommand": "bash .devcontainer/bootstrap.sh"
 }
