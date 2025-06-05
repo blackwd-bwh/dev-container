@@ -13,7 +13,7 @@ apt-get update
 
 # Core packages
 DEBIAN_PACKAGES=(
-  sudo git curl wget unzip htop jq tmux docker.io zsh
+  sudo git curl wget unzip htop jq tmux zsh
   fonts-powerline tree bat build-essential
   ca-certificates gnupg lsb-release software-properties-common
 )

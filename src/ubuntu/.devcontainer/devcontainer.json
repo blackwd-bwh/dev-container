@@ -3,14 +3,13 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "zsh"
-  },
   "customizations": {
-    "vscode": {
-      "extensions": []
+  "vscode": {
+  "extensions": [],
+    "settings": {
+      "terminal.integrated.defaultProfile.linux": "zsh"
     }
-  },
-  "features": {},
+  }
+},
   "remoteUser": "root"
 }

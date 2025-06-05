@@ -1,0 +1,8 @@
+{
+  "name": "ubuntu-base",
+  "version": "1.0.0",
+  "description": "Minimal Ubuntu 22.04 base dev container with core CLI tools.",
+  "license": "MIT",
+  "publisher": "blackwd",
+  "categories": ["Base"]
+}
