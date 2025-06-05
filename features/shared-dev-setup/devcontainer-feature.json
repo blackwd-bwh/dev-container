@@ -1,0 +1,13 @@
+{
+  "id": "shared-dev-setup",
+  "version": "1.0.0",
+  "name": "Shared Dev Setup",
+  "description": "Installs core dev tools, dotfiles, bat, tree, and Powerlevel10k shell theme.",
+  "options": {
+    "forceReinstallZsh": {
+      "type": "boolean",
+      "default": false,
+      "description": "Force reinstall of Oh My Zsh and Powerlevel10k even if already installed."
+    }
+  }
+}

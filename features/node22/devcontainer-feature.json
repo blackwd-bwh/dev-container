@@ -1,0 +1,8 @@
+{
+  "id": "nodejs-22",
+  "version": "1.0.0",
+  "name": "Node.js 22.x",
+  "description": "Installs Node.js 22.x using NodeSource",
+  "installsAfter": [],
+  "options": {}
+}

@@ -1,0 +1,6 @@
+{
+  "id": "aws-cli",
+  "version": "1.0.0",
+  "name": "AWS CLI v2",
+  "description": "Installs the AWS CLI version 2."
+}

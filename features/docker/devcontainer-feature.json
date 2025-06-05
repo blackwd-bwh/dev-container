@@ -1,0 +1,6 @@
+{
+  "id": "docker",
+  "version": "1.0.0",
+  "name": "Docker CLI",
+  "description": "Installs the Docker CLI and daemon (docker.io)."
+}

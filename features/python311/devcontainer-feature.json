@@ -1,0 +1,6 @@
+{
+  "id": "python311",
+  "version": "1.0.0",
+  "name": "Python 3.11 + pip",
+  "description": "Installs Python 3.11, venv, distutils, pip, and common tools (uv, ipython)."
+}

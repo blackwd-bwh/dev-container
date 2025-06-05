@@ -1,0 +1,24 @@
+{
+  "id": "start-ssh-agent",
+  "version": "1.0.0",
+  "name": "Start SSH Agent",
+  "description": "Starts ssh-agent and loads configured keys into the environment.",
+  "options": {
+    "KEYS": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": ["/root/.ssh/dotfiles_deploy_key", "/root/.ssh/bitbucket"],
+      "description": "List of SSH private key paths to load into the agent"
+    },
+    "SOCKETPATH": {
+      "type": "string",
+      "default": "/root/.ssh/ssh-agent.sock",
+      "description": "Path to the SSH agent socket"
+    }
+  },
+  "containerEnv": {
+    "SSH_AUTH_SOCK": "/root/.ssh/ssh-agent.sock"
+  }
+}
