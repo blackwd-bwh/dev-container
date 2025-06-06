@@ -2,5 +2,9 @@
   "id": "cdk",
   "version": "1.0.0",
   "name": "AWS CDK",
-  "description": "Installs the AWS Cloud Development Kit (CDK) globally using npm."
+  "description": "Installs the AWS Cloud Development Kit (CDK) globally using npm.",
+  "dependsOn": {
+    "./features/shared-dev-setup": {},
+    "./features/node22": {}
+  }
 }
