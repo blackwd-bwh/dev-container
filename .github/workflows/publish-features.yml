@@ -1,0 +1,37 @@
+name: Publish Dev Container Features
+
+on:
+  push:
+    branches: [ templates-main ]
+    paths:
+      - 'features/**'
+      - '.github/workflows/publish-features.yml'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dev Containers CLI
+        run: npm install -g @devcontainers/cli
+
+      - name: Publish All Features
+        run: |
+          for dir in features/*/; do
+            devcontainer features publish "$dir" \
+              --namespace blackwd-bwh \
+              --registry ghcr.io
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
