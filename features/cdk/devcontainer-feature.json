@@ -1,6 +1,6 @@
 {
   "id": "cdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "AWS CDK",
   "description": "Installs the AWS Cloud Development Kit (CDK) globally using npm.",
   "dependsOn": {

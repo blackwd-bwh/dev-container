@@ -3,6 +3,5 @@
   "version": "1.0.0",
   "name": "Dotfiles Setup",
   "description": "Symlinks Zsh, Powerlevel10k, Git, and tmux config files from /root/code/dotfiles.",
-  "options": {},
-  "entrypoint": "install.sh"
+  "options": {}
 }
