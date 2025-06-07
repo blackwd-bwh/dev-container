@@ -1,6 +1,6 @@
 {
   "id": "shared-dev-setup",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Shared Dev Setup",
   "description": "Installs core dev tools, dotfiles, bat, tree, and Powerlevel10k shell theme.",
   "options": {
