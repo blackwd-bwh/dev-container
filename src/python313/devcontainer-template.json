@@ -1,0 +1,10 @@
+{
+    "id": "python313",
+    "version": "1.0.0",
+    "name": "Python 3.13 Base",
+    "description": "Python 3.13 dev container",
+    "image": "ghcr.io/blackwd-bwh/python313-base",
+    "publisher": "blackwd",
+    "platforms": ["Python"],
+    "optionalPaths": []
+}
