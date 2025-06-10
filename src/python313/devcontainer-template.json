@@ -2,7 +2,7 @@
     "id": "python313",
     "version": "1.0.0",
     "name": "Python 3.13 Base",
-    "description": "Python 3.13 dev container with Node.js, AWS CLI, CDK, Docker CLI, tmux, and Zsh configured via dotfiles.",
+    "description": "Python 3.13 dev container",
     "documentationURL": "https://github.com/blackwd/dev-container/tree/main/src/python313",
     "publisher": "blackwd",
     "licenseURL": "https://github.com/blackwd/dev-container/blob/main/LICENSE",
