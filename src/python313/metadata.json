@@ -1,0 +1,8 @@
+{
+  "name": "python313-base",
+  "version": "1.0.0",
+  "description": "Minimal Python 3.13 base dev container with core CLI tools.",
+  "license": "MIT",
+  "publisher": "blackwd",
+  "categories": ["Base"]
+}
