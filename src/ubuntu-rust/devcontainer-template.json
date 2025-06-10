@@ -1,0 +1,10 @@
+{
+  "id": "ubuntu-rust",
+  "version": "1.0.0",
+  "name": "Ubuntu with Rust",
+  "description": "Ubuntu 22.04 base with Rust preinstalled. Designed for RustRover users.",
+  "image": "ghcr.io/blackwd-bwh/ubuntu-rust",
+  "publisher": "blackwd",
+  "tags": ["ubuntu", "rust", "base"],
+  "platforms": ["Rust"]
+}
