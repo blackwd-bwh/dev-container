@@ -1,0 +1,10 @@
+{
+    "id": "ubuntu",
+    "version": "1.0.0",
+    "name": "Ubuntu 22",
+    "description": "Ubuntu 22 base dev container",
+    "image": "ghcr.io/blackwd-bwh/ubuntu-base",
+    "publisher": "blackwd",
+    "platforms": ["Ubuntu"],
+    "optionalPaths": []
+}

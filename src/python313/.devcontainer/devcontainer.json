@@ -1,0 +1,15 @@
+{
+  "name": "Python3.13 Base Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+  "vscode": {
+  "extensions": [],
+    "settings": {
+      "terminal.integrated.defaultProfile.linux": "zsh"
+    }
+  }
+},
+  "remoteUser": "root"
+}

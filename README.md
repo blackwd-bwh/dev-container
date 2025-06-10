@@ -13,7 +13,7 @@ The SSH agent is started manually with a custom script, and its socket and envir
 
 ## Features
 
-- **Base**: Ubuntu 22.04
+- **Base**: **Python 3.13** (via official slim image)
 - **Shell**: Zsh with Oh My Zsh and Powerlevel10k theme
 - **Terminal Multiplexer**: tmux auto-start on shell login
 - **AWS CLI**: Installed and preconfigured via bind mount
