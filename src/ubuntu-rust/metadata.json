@@ -1,0 +1,4 @@
+{
+  "name": "ubuntu-rust",
+  "description": "Minimal Ubuntu 22.04 dev container with Rust toolchain preinstalled."
+}
