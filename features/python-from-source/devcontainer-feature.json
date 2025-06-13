@@ -1,0 +1,24 @@
+{
+  "id": "python-from-source",
+  "version": "1.0.0",
+  "name": "Python (From Source)",
+  "description": "Build and install a specific Python version from source. Automatically resolves the latest patch version if only major.minor is provided.",
+  "documentationURL": "https://www.python.org",
+  "options": {
+    "variant": {
+      "type": "string",
+      "default": "3.12",
+      "description": "Python version to install (major.minor or full version). If major.minor is given (e.g., 3.11), the latest patch will be resolved automatically.",
+      "enum": [
+        "3.12",
+        "3.11",
+        "3.10",
+        "3.9",
+        "3.8",
+        "3.7",
+        "3.6",
+        "2.7"
+      ]
+    }
+  }
+}
