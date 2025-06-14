@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INPUT_VERSION="${1:-3.12}"  # Pass as argument or default to 3.12
+INPUT_VERSION="${1:-3.12}"  # Pass as argument or default to 3.12.
 
 echo "🔍 Looking up latest patch version for: $INPUT_VERSION"
 

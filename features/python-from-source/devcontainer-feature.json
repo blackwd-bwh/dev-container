@@ -1,6 +1,6 @@
 {
   "id": "python-from-source",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "Python (From Source)",
   "description": "Build and install a specific Python version from source. Automatically resolves the latest patch version if only major.minor is provided.",
   "documentationURL": "https://www.python.org",
